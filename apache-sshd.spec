@@ -1,12 +1,16 @@
 Epoch:               1
 Name:                apache-sshd
 Version:             2.2.0
-Release:             1
+Release:             2
 Summary:             Apache SSHD
 License:             ASL 2.0 and ISC
 URL:                 http://mina.apache.org/sshd-project
 Source0:             https://archive.apache.org/dist/mina/sshd/%{version}/apache-sshd-%{version}-src.tar.gz
 Patch0:              0001-Avoid-optional-dependency-on-native-tomcat-APR-libra.patch
+Patch1:              CVE-2021-30129-1.patch
+Patch2:              CVE-2021-30129-2.patch
+Patch3:              CVE-2021-30129-3.patch
+
 BuildRequires:       maven-local mvn(junit:junit) mvn(net.i2p.crypto:eddsa) mvn(org.apache.ant:ant)
 BuildRequires:       mvn(org.apache:apache:pom:) mvn(org.apache.felix:maven-bundle-plugin)
 BuildRequires:       mvn(org.apache.maven:maven-archiver)
@@ -31,6 +35,9 @@ This package provides %{name}.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 rm -rf sshd-core/src/main/java/org/apache/sshd/agent/unix
 %pom_remove_dep :spring-framework-bom
 %pom_disable_module assembly
@@ -64,5 +71,8 @@ rm -rf sshd-core/src/main/java/org/apache/sshd/agent/unix
 %license LICENSE.txt NOTICE.txt assembly/src/main/legal/licenses/jbcrypt.txt
 
 %changelog
+* Tue Aug 10 2021 yaoxin <yaoxin30@huawei.com> - 2.2.0-2
+- Fix CVE-2021-30129
+
 * Thu Aug 6 2020 Jeffery.Gao <gaojianxing@huawei.com> - 2.2.0-1
 - Package init
